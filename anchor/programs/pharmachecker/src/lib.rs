@@ -8,63 +8,38 @@ declare_id!("AsjZ3kWAUSQRNt2pZVeJkywhZ6gpLpHZmJjduPmKZDZZ");
 pub mod pharmachecker {
     use super::*;
 
-  pub fn close(_ctx: Context<ClosePharmachecker>) -> Result<()> {
-    Ok(())
-  }
-
-  pub fn decrement(ctx: Context<Update>) -> Result<()> {
-    ctx.accounts.pharmachecker.count = ctx.accounts.pharmachecker.count.checked_sub(1).unwrap();
-    Ok(())
-  }
-
-  pub fn increment(ctx: Context<Update>) -> Result<()> {
-    ctx.accounts.pharmachecker.count = ctx.accounts.pharmachecker.count.checked_add(1).unwrap();
-    Ok(())
-  }
-
-  pub fn initialize(_ctx: Context<InitializePharmachecker>) -> Result<()> {
-    Ok(())
-  }
-
-  pub fn set(ctx: Context<Update>, value: u8) -> Result<()> {
-    ctx.accounts.pharmachecker.count = value.clone();
-    Ok(())
-  }
-}
-
-#[derive(Accounts)]
-pub struct InitializePharmachecker<'info> {
-  #[account(mut)]
-  pub payer: Signer<'info>,
-
-  #[account(
-  init,
-  space = 8 + Pharmachecker::INIT_SPACE,
-  payer = payer
-  )]
-  pub pharmachecker: Account<'info, Pharmachecker>,
-  pub system_program: Program<'info, System>,
-}
-#[derive(Accounts)]
-pub struct ClosePharmachecker<'info> {
-  #[account(mut)]
-  pub payer: Signer<'info>,
-
-  #[account(
-  mut,
-  close = payer, // close account and return lamports to payer
-  )]
-  pub pharmachecker: Account<'info, Pharmachecker>,
-}
-
-#[derive(Accounts)]
-pub struct Update<'info> {
-  #[account(mut)]
-  pub pharmachecker: Account<'info, Pharmachecker>,
 }
 
 #[account]
 #[derive(InitSpace)]
-pub struct Pharmachecker {
-  count: u8,
+pub struct Drug{
+  #[max_len(50)]
+  pub drug_id: String,
+  #[max_len(100)]
+  pub name: String,
+  #[max_len(50)]
+  pub manufacturer: String,
+  #[max_len(100)]
+  pub manufacturer_location: String,
+  #[max_len(32)]
+  pub batch_number: String,
+  #[max_len(50)]
+  pub certficates: Vec<String>
+  #[max_len(50)]
+  pub party_number: String,
+  #[max_len(30)]
+  pub active_ingrediants: Vec<String>,
+  #[max_len(50)]
+  pub excipients: Vec<String>,
+  #[max_len(300)]
+  pub prospectus: String,
+  #[max_len(200)]
+  pub indication: String,
+  #[max_len(200)]
+  pub contraindication: String,
+  #[max_len(200)]
+  pub side_effects: Vec<String>,
+  #[max_len(100)]
+  pub product_state: String,
+  pub price: u64,
 }
